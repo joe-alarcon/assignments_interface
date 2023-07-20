@@ -1,0 +1,71 @@
+{% extends "index.html" %}
+{% block content %}
+
+<span>
+    <button onclick="location.href = '{{ back }}';" class="back"> Back </button>
+</span>
+
+<h2> Update {{ coursework.course.name }} {{ coursework.name }} </h2>
+<form method="post" id="UpdateForm">
+    {{ up_form.hidden_tag() }}
+
+    <h3> Update Grade </h3>
+    <table class="FormTable">
+        <tr>
+            <th> {{ up_form.grade.label }} </th>
+            {% if form_type_a %}
+                <th> {{ up_form.finished.label }} </th>
+                <th> {{ up_form.delete.label }} </th>
+            {% endif %}
+        </tr>
+        <tr>
+            <td> {{ up_form.grade() }} </td>
+            {% if form_type_a %}
+                <td> {{ up_form.finished() }} </td>
+                <th> {{ up_form.delete() }} </th>
+            {% endif %}
+        </tr>
+    </table>
+
+    <h3> Update Info </h3>
+    <table class="FormTable">
+        <tr>
+            <th> {{ up_form.name.label }} </th>
+            {% if form_type_a %}
+                <th> {{ up_form.due.label }} </th>
+            {% else %}
+                <th> {{ up_form.location.label }} </th>
+                <th> {{ up_form.date.label }} </th>
+                <th> {{ up_form.hour.label }} </th>
+                {% if z_score_clobber %}
+                <th> {{ up_form.z_score_c.label }} </th>
+                <th> {{ up_form.z_score_c_grade.label }} </th>
+                {% endif %}
+            {% endif %}
+            {% if drop_available %}
+                <th> {{ up_form.drop.label }} </th>
+            {% endif %}
+        </tr>
+        <tr>
+            <td> {{ up_form.name() }} </td>
+            {% if form_type_a %}
+                <td> {{ up_form.due() }} </td>
+            {% else %}
+                <td> {{ up_form.location() }} </td>
+                <td> {{ up_form.date() }} </td>
+                <td> {{ up_form.hour() }} </td>
+                {% if z_score_clobber %}
+                <td> {{ up_form.z_score_c() }} </td>
+                <td> {{ up_form.z_score_c_grade() }} </td>
+                {% endif %}
+            {% endif %}
+            {% if drop_available %}
+                <td> {{ up_form.drop() }} </td>
+            {% endif %}
+        </tr>
+    </table>
+
+    {{ up_form.submit() }}
+</form>
+
+{% endblock %}

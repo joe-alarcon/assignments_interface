@@ -1,0 +1,225 @@
+{% extends "index.html" %}
+{% block content %}
+
+<span style="margin-right: 20px; margin-left: 20px;">
+    <button onclick="location.href = '/semester/{{course.semester.name}}';" class="semester"> {{course.semester.name}} </button>
+</span>
+
+<h1> {{ course.name }} {% if course.final_grade != "z" %} Final Grade: {{ course.final_grade }} {% endif %} </h1>
+
+<a href="{{ course.url_link }}" target="_blank"> link </a>
+
+{% if refresh %}
+<span>
+    <button onclick="location.href = '/refresh_course/{{ course.name }}';" class="update"> Refresh </button>
+</span>
+{% endif %}
+
+<h3>Assignments</h3>
+<table id="CourseAssignmentTable">
+    <tr id="CourseAssignmentTableRowHeader">
+        <th> Due Date </th>
+        <th style="width: 200px;"> Assignment </th>
+        <th> Completed </th>
+        <th> Grade </th>
+        <th> Update </th>
+        <th> Type </th>
+    </tr>
+    {% for assignment in assignments %}
+    <tr>
+        <td> {{ assignment.due }} </td>
+        <td> {{ assignment.name }} </td>
+        <td {% if assignment.completed %} 
+                style="background-color: rgb(60, 131, 22);"
+            {% else %}
+                style="background-color: rgb(167, 47, 47);"
+            {% endif %}> {{ assignment.completed }} </td>
+        {% if assignment.grade == -1 %}
+            <td> Ungraded </td>
+        {% elif assignment.grade == -2 %}
+            <td> N/A </td>
+        {% else %}
+            <td> {{ num_process(assignment.grade) }} </td>
+        {% endif %}
+        <td> <span>
+            <button onclick="location.href = '/update_a_{{ assignment.id }}';" class="update"> Update </button>
+        </span> </td>
+        <td> {{ assignment.type }} </td>
+    </tr>
+    {% endfor %}
+</table>
+
+<h3>Exams</h3>
+<table id="CourseExamTable">
+    <tr id="CourseExamTableRowHeader">
+        <th> Date </th>
+        <th style="width: 100px;"> Name </th>
+        <th> Location </th>
+        <th> Time </th>
+        <th> Grade </th>
+        <th> Update Grade </th>
+    </tr>
+    {% for exam in exams %}
+    <tr>
+        <td> {{ exam.date }} </td>
+        <td> {{ exam.name }} </td>
+        <td> {{ exam.location }} </td>
+        <td> {{ exam.time }} </td>
+        {% if exam.grade == -1 %}
+            <td> Ungraded </td>
+        {% elif exam.grade == -2 %}
+            <td> N/A </td>
+        {% else %}
+            <td> {{ num_process(exam.grade) }} </td>
+        {% endif %}
+        <td> <span>
+            <button onclick="location.href = '/update_e_{{ exam.id }}';" class="update"> Update </button>
+        </span> </td>
+    </tr>
+    {% endfor %}
+</table>
+
+<h3>Averages</h3>
+<table id="CourseAvgTable">
+    <tr id="CourseAvgTableRowHeader">
+        <th> Category </th>
+        <th> Fully Graded </th>
+        <th> Avg Grade </th>
+        <th> Weight </th>
+        <th> Value </th>
+        <th> Policies </th>
+    </tr>
+    {% for type, data in averages.items() %}
+    <tr>
+        <td> {{ type }} </td>
+        <td> {{ data["Fully Graded"] }} </td>
+        <td> {{ data["Grade"] }} </td>
+        <td> {{ data["Weight"] }} </td>
+        {% if data["Rubric Score"] != -1 %}
+            <td> {{ data["Rubric Score"] }} </td>
+        {% else %}
+            <td> Ungraded </td>
+        {% endif %}
+        <td> {{ data["Course Policy"] }} </td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% if course_information %}
+<h3>Course Details</h3>
+<table id="CourseTable">
+    <tr>
+        <th>Description</th>
+        <th>Week Days</th>
+        <th>Time</th>
+        <th>Location</th>
+    </tr>
+    {% for label, course_section in course_information.items() %}
+    <tr>
+      <td> {{ label }} </td>
+      <td> {{ course_section["Week Days"] }} </td>
+      <td> {{ course_section["Time"] }} </td>
+      <td> {{ course_section["Location"] }} </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
+
+<h3>New Section</h3>
+<form method="post" id="SectionForm">
+    {{ section_form.hidden_tag() }}
+    <table class="FormTable">
+        <tr>
+          <th>{{ section_form.week_days.label }}</th>
+          <th>{{ section_form.start_time.label }}</th>
+          <th>{{ section_form.end_time.label }}</th>
+          <th>{{ section_form.location.label }}</th>
+          <th>{{ section_form.description.label }}</th>
+        </tr>
+        <tr>
+          <td>{{ section_form.week_days() }}</td>
+          <td>{{ section_form.start_time() }}</td>
+          <td>{{ section_form.end_time() }}</td>
+          <td>{{ section_form.location() }}</td>
+          <td>{{ section_form.description() }}</td>
+        </tr>
+    </table>
+    {{ section_form.submit() }}
+</form>
+
+<h3>New Assignment</h3>
+<form method="post" id="AssignmentForm">
+    {{ assign_form.hidden_tag() }}
+    <table class="FormTable">
+        <tr>
+            <th>{{ assign_form.name.label }}</th>
+            <th class="MultiSelect">{{ assign_form.type.label }}</th>
+            <th>{{ assign_form.due.label }}</th>
+            <th>{{ assign_form.repeat_weekly.label }}</th>
+            <th>{{ assign_form.end_repeat.label }}</th>
+        </tr>
+        <tr>
+            <td>{{ assign_form.name() }}</td>
+            <td class="MultiSelect">{{ assign_form.type() }}</td>
+            <td>{{ assign_form.due() }}</td>
+            <td>{{ assign_form.repeat_weekly() }}</td>
+            <td>{{ assign_form.end_repeat() }}</td>
+        </tr>
+    </table>
+    {{ assign_form.submit() }}
+</form>
+
+<h3>New Exam</h3>
+<form method="post" id="ExamForm">
+    {{ exam_form.hidden_tag() }}
+    <table class="FormTable">
+        <tr>
+            <th class="MultiSelect">{{ exam_form.name.label }}</th>
+            <th>{{ exam_form.location.label }}</th>
+            <th>{{ exam_form.date.label }}</th>
+            <th>{{ exam_form.hour.label }}</th>
+        </tr>
+        <tr>
+            <td class="MultiSelect">{{ exam_form.name() }}</td>
+            <td>{{ exam_form.location() }}</td>
+            <td>{{ exam_form.date() }}</td>
+            <td>{{ exam_form.hour() }}</td>
+        </tr>
+    </table>
+    {{ exam_form.submit() }}
+</form>
+
+<!-- {% if grade_breakdown %}
+<h3>Course Grade Breakdown</h3>
+<table id="GradeTable">
+    {% for item in grade_breakdown %}
+    <tr>
+        <th> {{ item[0] }} </th>
+        <td> {{ item[1] }} </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %} -->
+
+<h3>Enter Course Grade Breakdown</h3>
+<form method="post" id="CourseForm">
+    {{ course_form.hidden_tag() }}
+    <table class="FormTable">
+        <tr>
+            <th class="MultiSelect">{{ course_form.grade_breakdown.label }}</th>
+            <th>{{ course_form.grade_percentages.label }}</th>
+            <th class="MultiSelect">{{ course_form.course_policies.label }}</th>
+            <th>{{ course_form.final_grade.label }}</th>
+        </tr>
+        <tr>
+            <td class="MultiSelect">{{ course_form.grade_breakdown() }}</td>
+            <td>{{ course_form.grade_percentages() }}</td>
+            <td class="MultiSelect">{{ course_form.course_policies() }}</td>
+            <td>{{ course_form.final_grade() }}</td>
+        </tr>
+    </table>
+    {{ course_form.submit() }}
+</form>
+
+
+{% endblock %}

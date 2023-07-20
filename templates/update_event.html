@@ -1,0 +1,45 @@
+{% extends "index.html" %}
+{% block content %}
+
+{% if event_bool %}
+<h3> Update Info for {{ event.title }} </h3>
+{% endif %}
+<form method="post" id="EventUpdateForm">
+  {{ up_form.hidden_tag() }}
+  <table class="FormTable">
+    {% if event_bool %}
+      <tr>
+          <th> {{ up_form.title.label }} </th>
+          <th> {{ up_form.location.label }} </th>
+          <th> {{ up_form.date.label }} </th>
+          <th> {{ up_form.time.label }} </th>
+      </tr>
+      <tr>
+          <td> {{ up_form.title() }} </td>
+          <td> {{ up_form.location() }} </td>
+          <td> {{ up_form.date() }} </td>
+          <td> {{ up_form.time() }} </td>
+      </tr>
+    {% else %}
+      <tr>
+        <th> {{ up_form.content.label }} </th>
+        <th> {{ up_form.link.label }} </th>
+    </tr>
+    <tr>
+        <td> {{ up_form.content() }} </td>
+        <td> {{ up_form.link() }} </td>
+    </tr>
+    {% endif %}
+  </table>
+
+  <table class="FormTable">
+    <tr>
+        <th> {{ up_form.delete.label }} </th>
+        <td> {{ up_form.delete() }} </td>
+    </tr>
+  </table>
+  
+  {{ up_form.submit() }}
+</form>
+
+{% endblock %}

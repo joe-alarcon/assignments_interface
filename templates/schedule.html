@@ -1,0 +1,41 @@
+{% extends "index.html" %}
+{% block content %}
+
+<h2> Today's Schedule </h2>
+<table class='Schedule' id='TodaySchedule'>
+  <tr>
+    <th> Class </th>
+    <th> Section </th>
+    <th> Time </th>
+    <th> Location </th>
+  </tr>
+  {% for section in today_sections %}
+    <tr>
+      <td> {{ section["Name"] }} </td>
+      <td> {{ section["Description"] }} </td>
+      <td> {{ section["Data"]["Time"] }} </td>
+      <td> {{ section["Data"]["Location"] }} </td>
+    </tr>
+  {% endfor %}
+</table>
+
+<h2> Tomorrow's Schedule </h2>
+<table class='Schedule' id='TomorrowSchedule'>
+  <tr>
+    <th> Class </th>
+    <th> Section </th>
+    <th> Time </th>
+    <th> Location </th>
+  </tr>
+  {% for section in tomorrow_sections %}
+    <tr>
+      <td> {{ section["Name"] }} </td>
+      <td> {{ section["Description"] }} </td>
+      <td> {{ section["Data"]["Time"] }} </td>
+      <td> {{ section["Data"]["Location"] }} </td>
+    </tr>
+  {% endfor %}
+</table>
+
+
+{% endblock %}

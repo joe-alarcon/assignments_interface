@@ -1,0 +1,214 @@
+{% extends "index.html" %}
+{% from 'index.html' import render_task %}
+
+{% block content %}
+
+<div id="AssignmentsAndTasks">
+  <div id="HomeContent">
+      <div class="HomeContainer" id="SemesterLinks">
+        <h2> Semester Links </h2>
+          <table id="SemesterLinksTable">
+            {% for year in semesters_by_year %}
+              <tr>
+                  {% for semester in year %}
+                  <td class="SemesterLinksTableEntry">
+                    <button onclick="location.href = '/semester/{{semester.name}}';" class="semester"> {{semester.name}} </button>
+                  </td>
+                  {% endfor %}
+              </tr>
+              {% endfor %}
+          </table>
+      </div>
+
+      <div class="HomeContainer" id="TodayAssignments">
+        <h2> Assignments Due Today </h2>
+          {% if today %}
+          <ul id="TodayAssignmentsList" class="HomeList">
+              {% for assignment in today %}
+              <li style="background-color: {{ color_assign(assignment.course.id) }}">
+                  {% if assignment.completed %}
+                  <h3>
+                    {{ assignment.course.name }}: {{ assignment.name }}
+                  </h3>
+                  {% else %}
+                  <h3 style="color: red; background-color: rgb(70, 70, 70);">
+                    {{ assignment.course.name }}: {{ assignment.name }}
+                  </h3>
+                  {% endif %}
+                <a href="/update_a_{{ assignment.id }}"> Update </a>
+              </li>
+              {% endfor %}
+          </ul>
+          {% else %}
+          <h3> No assignments due today </h3>
+          {% endif %}
+      </div>
+
+      {% if exams_today %}
+      <div class="HomeContainer" id="SemesterLinks">
+        <h2> Today's Exams </h2>
+        <ul id="TodayExamsList" class="HomeList">
+            {% for exam in exams_today %}
+              <li>
+                  <h3 style="background-color: {{ color_assign(exam.course.id) }}">
+                      {{ exam.course.name }}: {{ exam.name }} - {{ exam.location }} at {{ exam.time }}
+                  </h3>
+              </li>
+              {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+      
+      <div class="HomeContainer" id="OverdueAssignments">
+        <h2> Overdue Assignments </h2>
+        {% if overdue_assignments %}
+        <ul id="OverdueAssignmentsList" class="HomeList">
+            {% for assignment in overdue_assignments %}
+            <li style="background-color: {{ color_assign(assignment.course.id) }}">
+                <h3 style="color: red; background-color: rgb(70, 70, 70);">
+                    {{ assignment.course.name }}: {{ assignment.name }} - og due: {{ assignment.due }}
+                </h3>
+                <a href="/update_a_{{ assignment.id }}"> Update </a>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <h3> No over due assignments </h3>
+        {% endif %}
+      </div>
+
+      <div class="HomeContainer" id="ExamsInWeek">
+        <h2> Exams In A Week </h2>
+          {% if exams_in_a_week %}
+          <ul id="ExamsInWeekList" class="HomeList">
+              {% for exam in exams_in_a_week %}
+              <li>
+                  <h3 style="background-color: {{ color_assign(exam.course.id) }}">
+                      {{ exam.date }} – {{ exam.course.name }}: {{ exam.name }} - {{ exam.location }} at {{ exam.time }}
+                  </h3>
+              </li>
+              {% endfor %}
+          </ul>
+          {% else %}
+          <h3> No upcoming exams </h3>
+          {% endif %}
+      </div>
+
+      <div class="HomeContainer" id="NewSemesterForm">
+        <h2> Make a New Semester </h2>
+        <form method="post" id="SemesterForm">
+            {{ sem_form.hidden_tag() }}
+            <table class="FormTable" id="TableSemesterForm">
+                <tr>
+                    <th>{{ sem_form.season.label }}</th>
+                    <th>{{ sem_form.year.label }}</th>
+                </tr>
+                <tr>
+                    <td>{{ sem_form.season() }}</td>
+                    <td>{{ sem_form.year() }}</td>
+                </tr>
+            </table>
+            {{ sem_form.submit() }}
+        </form>
+      </div>
+      
+  </div>
+
+  <div id="ToDoContent">
+      {% if today_bdays %}
+      <div class="HomeContainer">
+        <h2> Today's Birthdays </h2>
+        <ul class="ToDoList">
+            {% for b_day in today_bdays %}
+            <li> <h3> {{ b_day.name }} </h3> </li>
+            {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+      
+      <div class="HomeContainer" id="ToDoToday">
+        <h2> To Do Today </h2>
+        <div class="ToDoDiv" id="ToDoTodayDiv">
+            {% if t_tasks %}
+            <ul class="ToDoList" id="ToDoTodayList">
+                {% for task in t_tasks %}
+                <li style="font-weight: bold">
+                    {{ render_task(task) }} ... 
+                    <a class="ToDoLink" href="/finished_task/{{ task.id }}"> Finished </a>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <h3> No tasks due today </h3>
+            {% endif %}
+        </div>
+      </div>
+      
+      <div class="HomeContainer" id="Overdue">
+        <h2> Overdue </h2>
+        <div class="ToDoDiv" id="OverdueDiv">
+            {% if o_tasks %}
+            <ul class="ToDoList" id="OverdueList">
+                {% for task in o_tasks %}
+                <li>
+                    {{ render_task(task) }} ...
+                    <a class="ToDoLink" href="/finished_task/{{ task.id }}"> Finished </a>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <h3> No tasks overdue ඞ </h3>
+            {% endif %}
+        </div>
+      </div>
+      
+      <div class="HomeContainer" id="ToDo">
+        <h2> To Do </h2>
+        <div class="ToDoDiv" id="ToDoPendingDiv">
+            {% if p_tasks %}
+            <ul class="ToDoList" id="ToDoPendingList">
+                {% for task in p_tasks %}
+                <li>
+                    {{ render_task(task) }} ... 
+                    <a class="ToDoLink" href="/finished_task/{{ task.id }}"> Finished </a>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <h3> No tasks due </h3>
+            {% endif %}
+        </div>
+      </div>
+      
+      <div class="HomeContainer" id="NewTaskForm">
+        <h2> Make a New Task </h2>
+        <form method="post" id="ToDoForm">
+            {{ todoform.hidden_tag() }}
+            <table class="FormTable" id="TableToDoForm">
+                <tr>
+                    <th>{{ todoform.title.label }}</th>
+                    <th>{{ todoform.priority.label }}</th>
+                </tr>
+                <tr>
+                    <td>{{ todoform.title() }}</td>
+                    <td>{{ todoform.priority() }}</td>
+                </tr>
+                <tr>
+                    <!-- <th>{ todoform.include_date.label }</th> -->
+                    <th>{{ todoform.date.label }}</th>
+                    <th>{{ todoform.time.label }}</th>
+                </tr>
+                <tr>
+                    <!-- <td>{ todoform.include_date() }</td> -->
+                    <td>{{ todoform.date() }}</td>
+                    <td>{{ todoform.time() }}</td>
+                </tr>
+            </table>
+            {{ todoform.submit() }}
+        </form>
+      </div>
+      
+  </div>
+</div>
+
+{% endblock %}

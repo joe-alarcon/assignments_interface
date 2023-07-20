@@ -1,0 +1,466 @@
+
+body {
+    margin-left: 50px;
+    margin-right: 50px;
+    margin-top: 100px;
+    margin-bottom: 150px;
+    background-color: rgb(38, 38, 38);
+    color: rgb(220, 220, 220);
+}
+
+header {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 72px;
+    margin-bottom: 25px;
+}
+
+
+div.HomeContainer {
+    background-color: rgb(53, 53, 53);
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
+    border-radius: 20px;
+    border-style: solid;
+    border-color: rgb(174, 174, 174);
+    border-width: 2px;
+    margin-bottom: 20px;
+}
+
+div.HomeContainer h2 {
+    margin-top: 0px;
+    text-align: center;
+}
+
+div#HomeContent {
+    float: left;
+    width: 55%;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 100px;
+}
+
+div#HomeContent ul {
+    padding-inline-start: 0px;
+}
+
+div#ToDoContent {
+    float: right;
+    width: 40%;
+    min-height: 300px;
+    margin-bottom: 100px;
+}
+
+div#SemesterLinks {
+    text-align: center;
+}
+
+div#CourseLinks {
+    margin: auto;
+    text-align: center;
+}
+
+div#TodayAssignments {
+    margin-bottom: 20px;
+}
+
+div#ExamsInWeek {
+    margin-bottom: 50px;
+}
+
+div#ToDo {
+    margin-bottom: 50px;
+}
+
+div.Event {
+    width: 49%;
+    margin-bottom: 75px;
+}
+
+div#TodayEvent {
+    float: left;
+    margin-right: 20px;
+}
+
+div#WeekEvent {
+    float: right;
+}
+
+div#header {
+    background-color: rgb(60, 60, 60);
+    margin-left: 0px;
+    position: fixed;
+    width: 100%;
+    top: 0px;
+}
+
+div#AssignmentsAndTasks {
+    margin-bottom: 50px;
+}
+
+
+
+/* LISTS */
+ul {
+    list-style-type: none;
+    text-align: left;
+    padding-inline-start: 20px;
+}
+
+ul.ToDoList {
+    list-style-type: circle;
+}
+
+ul.ToDoList li {
+    margin-bottom: 10px;
+}
+
+ul.CalendarRowList {
+    padding-inline-start: 0px;
+}
+
+ul.CalendarRowList li {
+    margin-bottom: 10px;
+    border-radius: 5px;
+    padding: 0px;
+}
+
+ul.CalendarRowList li a {
+    margin: 0px;
+}
+
+ul li a {
+    font-size: 15px;
+}
+
+ul.news li {
+    margin-bottom: 10px;
+}
+
+ul.news a {
+    color:rgb(220, 220, 220);
+}
+
+ul#OverdueList li {
+    color: red;
+}
+
+ul#ExamsInWeekList {
+    list-style-type: circle;
+}
+
+ul#TodayExamsList {
+    list-style-type: circle;
+}
+
+ul.HomeList h3 {
+    padding: 3px;
+    padding-left: 4px;
+    border-radius: 5px;
+    border: rgb(220, 220, 220);
+    border-width: 2px;
+    border-style: solid;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+ul#TodayAssignmentsList li {
+    border-radius: 5px;
+    padding-bottom: 2px;
+}
+
+ul#TodayAssignmentsList a {
+    font-size: 20px;
+}
+
+h1 {
+    text-align: center;
+}
+
+
+
+/* TABLES */
+table {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-collapse: collapse;
+    margin: 10px;
+}
+
+table.EventTable th {
+    background-color: rgb(69, 143, 167);
+    width: 270px;
+}
+
+table.CalendarRow {
+    margin-bottom: 50px;
+}
+
+table.CalendarRow tr {
+    min-height: 300px;
+}
+
+table.CalendarRow th {
+    background-color: rgb(69, 143, 167);
+    width: 270px;
+}
+
+table.CalendarRow td {
+    background-color: rgb(60, 60, 60);
+    width: 270px;
+    height: 200px;
+}
+
+table.Schedule th {
+    background-color: rgb(69, 143, 167);
+    width: 270px;
+}
+
+table.Schedule td {
+    background-color: #767676;
+    width: 270px;
+    height: 70px;
+}
+
+table.BWTable th {
+    background-color: rgb(69, 143, 167);
+    width: 200px;
+}
+
+table.BWTable td {
+    background-color: #767676;
+    width: 200px;
+    height: 50px;
+}
+
+table.FormTable th {
+    background-color: rgb(69, 143, 167);
+}
+
+table#SemesterAssignmentTable th {
+    width: 400px;
+}
+
+table#SemesterAssignmentTable td {
+    height: 40px;
+}
+
+table#CourseTable th {
+    background-color: rgb(69, 143, 167);
+}
+
+table#CourseTable td {
+    background-color: #767676;
+}
+
+table#CourseExamTable tr:nth-child(even) {
+    background-color: #767676;
+}
+
+table#CourseAssignmentTable tr:nth-child(even) {
+    background-color: #767676;
+}
+
+table#CourseAvgTable tr:nth-child(even) {
+    background-color: #767676;
+}
+
+table#SemesterLinksTable td {
+    border: none;
+    width: auto;
+    height: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    margin-left: 10px;
+    vertical-align: middle;
+    padding: 0px;
+}
+
+table#SemesterLinksTable tbody {
+    width: 100%;
+}
+
+table#SemesterLinksTable tr {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+table#TableHeader td {
+    border: none;
+    width: 200px;
+}
+
+tr#CourseExamTableRowHeader {
+    background-color: rgb(69, 143, 167);
+}
+
+tr#CourseAssignmentTableRowHeader {
+    background-color: rgb(69, 143, 167);
+}
+
+tr#CourseAvgTableRowHeader {
+    background-color: rgb(69, 143, 167);
+}
+
+td {
+    text-align: center;
+    width: 100px;
+    height: 25px;
+    border: solid 1px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+td.MultiSelect {
+    width: 150px;
+}
+
+th {
+    text-align: center;
+    width: 120px;
+    height: 40px;
+    border: solid 1px;
+}
+
+table#ReminderTable {
+    width: 100%;
+    margin: 2px;
+}
+
+table#ReminderTable tbody {
+    width: 100%;
+}
+
+table#ReminderTable th {
+    background-color: rgb(69, 143, 167);
+    width: 100%;
+}
+
+table#ReminderTable a {
+    font-size: 16px;
+    margin: 0px;
+    align-content: normal;
+}
+
+
+
+a {
+    margin-left: 25px;
+    margin-right: 25px;
+    font-size: 20px;
+    color: rgb(220, 220, 220);
+}
+
+a.ToDoLink {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+a.UpdateLink {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+
+
+
+
+input#submit {
+    height: 30px;
+    width: 60px;
+    text-align: center;
+    border-radius: 5px;
+    border-width: 1px;
+}
+
+
+
+
+/* BUTTONS */
+button {
+    text-align: center;
+    font-size: 20px;
+    border-radius: 5px;
+    border: none;
+    color: white;
+    background-color: grey;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+button:hover {
+    color: grey;
+    background-color: white;
+}
+
+button.header {
+    height: 50px;
+    min-width: 100px;
+    font-size: 25px;
+    background-color: inherit;
+}
+button.header:hover {
+    background-color: rgb(78, 78, 78);
+    color: white;
+}
+
+button.semester {
+    height: 40px;
+    width: 80px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+button.course {
+    height: 75px;
+    width: 170px;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+button.back {
+    height: 40px;
+    min-width: 80px;
+    font-size: 25px;
+    margin-left: 20px;
+}
+
+button.update {
+    height: 40px;
+    width: 100px;
+    font-size: 17px;
+    color: inherit;
+    background-color: inherit;
+    font-family: inherit;
+}
+
+button.update:hover {
+    border: black;
+    border-width: 5px;
+    color: white;
+    background-color: rgb(78, 78, 78);
+    font-weight: bold;
+}
+
+button.CalendarBtn {
+    padding: 4px;
+    font-size: 16px;
+    background-color: inherit;
+    color: rgb(220, 220, 220);
+    text-align: inherit;
+    border: solid 1px rgb(159, 159, 159);
+    width: 100%;
+}
+
+button.CalendarBtn:hover {
+    background-color: rgb(69, 143, 167);
+    color: rgb(220, 220, 220);
+}

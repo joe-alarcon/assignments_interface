@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Assignments</title>
+    <link rel="stylesheet" type="text/css" href="/static/styling.css">
+</head>
+
+<header>
+  <div id="header">
+    <table id="TableHeader">
+      <tr>
+        <td>
+          <span>
+            <button onclick="location.href = '/';" class="header"> Home </button>
+          </span>
+        </td>
+        <td>
+          <span>
+            <button onclick="location.href = '/reminders';" class="header"> Reminders </button>
+          </span>
+        </td>
+        <td>
+          <span>
+            <button onclick="location.href = '/news';" class="header"> News </button>
+          </span>
+        </td>
+        <td>
+          <span>
+            <button onclick="location.href = '/events';" class="header"> Events </button>
+          </span>
+        </td>
+        <td>
+          <span>
+            <button onclick="location.href = '/calendar';" class="header"> Calendar </button>
+          </span>
+        </td>
+        <td>
+          <span>
+            <button onclick="location.href = '/schedule';" class="header"> Schedule </button>
+          </span>
+        </td>
+        <td>
+          <span>
+            <button onclick="location.href = '/birthdays';" class="header"> B-Days </button>
+          </span>
+        </td>
+      </tr>
+    </table>
+</div>
+</header>
+
+<body>
+
+{% block content %}{% endblock %}
+
+{% macro render_task(task) -%}
+{{ task.priority }}: {% if task.date %} {{ task.date }} – {% endif %} {% if task.time %} {{ task.time }} – {% endif %} {{ task.title }}
+{%- endmacro %}
+</body>
+</html>

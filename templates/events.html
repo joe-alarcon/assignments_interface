@@ -1,0 +1,84 @@
+{% extends "index.html" %}
+{% block content %}
+
+<div id="Events">
+
+    <div id="EventFormContainer">
+      <h2 class="TopMargin"> Make a New Event </h2>
+      <form method="post" id="EventForm">
+          {{ event_form.hidden_tag() }}
+          <table class="FormTable" id="TableEventForm">
+              <tr>
+                  <th>{{ event_form.title.label }}</th>
+                  <th>{{ event_form.location.label }}</th>
+                  <th>{{ event_form.date.label }}</th>
+                  <th>{{ event_form.time.label }}</th>
+                  <th class="MultiSelect">{{ event_form.repeat_days_of_week.label }}</th>
+                  <th>{{ event_form.end_repeat.label }}</th>
+              </tr>
+              <tr>
+                  <td>{{ event_form.title() }}</td>
+                  <td>{{ event_form.location() }}</td>
+                  <td>{{ event_form.date() }}</td>
+                  <td>{{ event_form.time() }}</td>
+                  <td class="MultiSelect">{{ event_form.repeat_days_of_week() }}</td>
+                  <td>{{ event_form.end_repeat() }}</td>
+              </tr>
+          </table>
+          {{ event_form.submit() }}
+      </form>
+    </div>
+
+    <span id="EventContainer">
+      <div class="Event" id="TodayEvent">
+        <h2>Today's Events</h2>
+        <table class="EventTable" id="TodayEvents">
+          <tr>
+              <th> Event Title </th>
+              <th> Location </th>
+              <th> Time </th>
+              <th> Update </th>
+          </tr>
+            {% for event in today_events %}
+            <tr>
+                <td> {{ event.title }} </td>
+                <td> {{ event.location }} </td>
+                <td> {{ event.time }} </td>
+                <td>
+                  <span>
+                    <button onclick="location.href = '/update_event_{{ event.id }}';" class="update"> Update </button>
+                  </span>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+      </div>
+
+      <div class="Event" id="WeekEvent">
+        <h2>This week's Events</h2>
+        <table class="EventTable" id="WeekEvents">
+          <tr>
+              <th> Event Title </th>
+              <th> Location </th>
+              <th> Date and Time </th>
+              <th> Update </th>
+          </tr>
+            {% for event in week_events %}
+            <tr>
+                <td> {{ event.title }} </td>
+                <td> {{ event.location }} </td>
+                <td> {{ event.date }} at {{ event.time }} </td>
+                <td> 
+                  <span>
+                    <button onclick="location.href = '/update_event_{{ event.id }}';" class="update"> Update </button>
+                  </span>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+      </div>
+    </span>
+
+</div>
+
+{% endblock %}

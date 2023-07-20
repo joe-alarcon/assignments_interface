@@ -1,0 +1,147 @@
+{% extends "index.html" %}
+{% block content %}
+
+<table class='Calendar'>
+  <tr>
+    <table class='CalendarRow'>
+      <tr>
+        {% for curr_day in list(all_tasks.keys())[:7]  %}
+        <th> {{ parse_to_str(curr_day.weekday()) }}  {{ curr_day.day }} </th>
+        {% endfor %}
+      </tr>
+      <tr>
+        {% for day in list(all_tasks.keys())[:7]  %}
+          <td>
+            <ul class='CalendarRowList'>
+              {% if all_exams %}
+              {% for exam in all_exams.get(day)  %}
+              <li style="background-color: rgb(196,61,61);">
+                <button class="CalendarBtn" onclick="location.href = '/update_e_{{ exam.id }}';">{{ exam.course.name }}: {{ exam.name }} at {{ exam.time }} </button>
+                <!-- <a href="/update_e_{{ exam.id }}"> {{ exam.course.name }}: {{ exam.name }} </a> at {{ exam.time }} -->
+              </li>
+              {% endfor %}
+              {% endif %}
+
+              {% if all_assignments %}
+              {% for assignment in all_assignments.get(day)  %}
+              <li {% if assignment.completed %} style="background-color: rgb(67, 145, 25);" {% endif %}>
+                <button class="CalendarBtn" onclick="location.href = '/update_a_{{ assignment.id }}';">{{ assignment.course.name }}: {{ assignment.name }}</button>
+                <!-- <a href="/update_a_{{ assignment.id }}"> {{ assignment.course.name }}: {{ assignment.name }} </a> -->
+              </li>
+              {% endfor %}
+              {% endif %}
+
+              {% for event in all_events.get(day)  %}
+                <li> {{ event.title }} at {{ event.time }} at {{ event.location }} </li>
+              {% endfor %}
+
+              {% for task in all_tasks.get(day)  %}
+                <li> {{ task.title }} at {{ task.time }} </li>
+              {% endfor %}
+            </ul>
+          </td>
+        {% endfor %}
+      </tr>
+    </table>
+  </tr>
+  <tr>
+    <table class='CalendarRow'>
+      <tr>
+        {% for curr_day in list(all_tasks.keys())[7:]  %}
+        <th> {{ parse_to_str(curr_day.weekday()) }}  {{ curr_day.day }} </th>
+        {% endfor %}
+      </tr>
+      <tr>
+        {% for day in list(all_tasks.keys())[7:]  %}
+          <td>
+            <ul class='CalendarRowList'>
+              {% if all_exams %}
+              {% for exam in all_exams.get(day)  %}
+              <li style="background-color: rgb(196,61,61);">
+                <button class="CalendarBtn" onclick="location.href = '/update_e_{{ exam.id }}';">{{ exam.course.name }}: {{ exam.name }} at {{ exam.time }} </button>
+                <!-- <a href="/update_e_{{ exam.id }}"> {{ exam.course.name }}: {{ exam.name }} </a> at {{ exam.time }} -->
+              </li>
+              {% endfor %}
+              {% endif %}
+
+              {% if all_assignments %}
+              {% for assignment in all_assignments.get(day)  %}
+              <li {% if assignment.completed %} style="background-color: rgb(67, 145, 25);" {% endif %}>
+                <button class="CalendarBtn" onclick="location.href = '/update_a_{{ assignment.id }}';">{{ assignment.course.name }}: {{ assignment.name }}</button>
+                <!-- <a href="/update_a_{{ assignment.id }}"> {{ assignment.course.name }}: {{ assignment.name }} </a> -->
+              </li>
+              {% endfor %}
+              {% endif %}
+
+              {% for event in all_events.get(day)  %}
+                <li> {{ event.title }} at {{ event.time }} at {{ event.location }} </li>
+              {% endfor %}
+              
+              {% for task in all_tasks.get(day)  %}
+                <li> {{ task.title }} at {{ task.time }} </li>
+              {% endfor %}
+            </ul>
+          </td>
+        {% endfor %}
+      </tr>
+    </table>
+  </tr>
+</table>
+
+<h3>Search Day</h3>
+<form method="post" id="BDayForm">
+    {{ search_form.hidden_tag() }}
+    <table class="FormTable">
+        <tr>
+            <th>{{ search_form.date.label }}</th>
+            <th> Submit </th>
+        </tr>
+        <tr>
+            <td>{{ search_form.date() }}</td>
+            <td>{{ search_form.submit() }}</td>
+        </tr>
+    </table>
+</form>
+
+{% if day_info %}
+<h2 style="text-align: center;">Info for {{ day_info.get("in_date") }}</h2>
+
+<h3>Assignments, Exams, and Tasks</h3>
+<ul class='CalendarRowList'>
+  {% for exam in day_info.get("exams")  %}
+    <li style="background-color: rgb(196,61,61);"><a href="/update_e_{{ exam.id }}">{{ exam.course.name }}: {{ exam.name }}</a> at {{ exam.time }} </li>
+  {% endfor %}
+  {% for assignment in day_info.get("assignments")  %}
+    <li {% if assignment.completed %} style="background-color: rgb(67, 145, 25);" {% endif %}>
+      <a href="/update_a_{{ assignment.id }}"> {{ assignment.course.name }}: {{ assignment.name }} </a>
+    </li>
+  {% endfor %}
+  {% for task in day_info.get("tasks")  %}
+    <li> {{ task.title }} at {{ task.time }} </li>
+  {% endfor %}
+</ul>
+
+<h3>Schedule</h3>
+<table class='Schedule' id='DaySchedule'>
+  <tr>
+    <th> Class </th>
+    <th> Section </th>
+    <th> Time </th>
+    <th> Location </th>
+  </tr>
+  {% for section in day_info.get("schedule") %}
+    <tr>
+      <td> {{ section["Name"] }} </td>
+      {% if section["Description"] == "Event" %}
+      <td> <a href="/update_event_{{ section['Data']['ID'] }}" class="UpdateLink"> {{ section["Description"] }} </a> </td>
+      {% else %}
+      <td> {{ section["Description"] }} </td>
+      {% endif %}
+      <td> {{ section["Data"]["Time"] }} </td>
+      <td> {{ section["Data"]["Location"] }} </td>
+    </tr>
+  {% endfor %}
+</table>
+{% endif %}
+
+{% endblock %}

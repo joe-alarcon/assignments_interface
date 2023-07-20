@@ -1,0 +1,143 @@
+{% extends "index.html" %}
+{% block content %}
+
+<h1> {{ semester.name }} </h1>
+
+{% if semester.start == "" %}
+<a href="/sem_update/{{ semester.name }}">update</a>
+{% endif %}
+
+<h2> Semester Status: semester is currently {% if semester.active == 1%} active{% else %} inactive{% endif %}. Click 
+    <a href="/activate_{{ semester.name }}"> here </a> to {% if semester.active == 1%} deactivate{% else %} activate{% endif %}.
+    Note that activating a semester when another semester is active deactivates the other semester. </h2>
+
+<h2>Course Links</h2>
+<div id="CourseLinks">
+    {% for course in courses %}
+    <span>
+        <button onclick="location.href = '/course/{{ course.name }}';" class="course"> {{course.name}} </button>
+    </span>
+    {% endfor %}
+</div>
+
+<h2>Final Grades</h2>
+<table id="SemesterFinalGradesTable">
+    <tr>
+        <th> Course </th>
+        <th> Final Grade </th>
+        <th> Raw Grade </th>
+    </tr>
+    {% for course in courses %}
+    {% if course.final_grade != "z" %}
+    <tr style="background-color: {{ color_assign(course.id) }}">
+        <td> {{ course.name }} </td>
+        <td> {{ course.final_grade }} </td>
+        {% if course.get_grade_data() %}
+        <td> {{ course.get_grade_data()["Total"]["Rubric Score"] }} </td>
+        {% else %}
+        <td> </td>
+        {% endif %}
+    </tr>
+    {% endif %}
+    {% endfor %}
+    {% if final_gpa != -1 %}
+    <tr>
+        <td> Final GPA </td>
+        <td> {{ final_gpa }} </td>
+        <td></td>
+    </tr>
+    {% endif %}
+</table>
+
+<h2>All Semester Assignments</h2>
+<table id="SemesterAssignmentTable">
+    <tr>
+        <th> Due Date </th>
+        <th> Course </th>
+        <th> Assignment </th>
+        <th style="width: 50px;"> Completed </th>
+        <th> Grade </th>
+        <th> Click to Update </th>
+    </tr>
+    {% for assignment in assignments %}
+    <tr style="background-color: {{ color_assign(assignment.course.id) }};
+        {% if assignment.type == 'project' %}
+        font-weight: bold;
+        {% endif %}">
+        <td> {{ assignment.due }} </td>
+        <td> {{ assignment.course.name }} </td>
+        <td> {{ assignment.name }} </td>
+        <td {% if assignment.completed %} 
+                style="background-color: rgb(60, 131, 22);"
+            {% else %}
+                style="background-color: rgb(167, 47, 47);"
+            {% endif %}
+            > {{ assignment.completed }} </td>
+        {% if assignment.grade == -1 %}
+            <td> Ungraded </td>
+        {% elif assignment.grade == -2 %}
+            <td> N/A </td>
+        {% else %}
+            <td> {{ num_process(assignment.grade) }} </td>
+        {% endif %}
+        <td>
+            <span>
+                <button onclick="location.href = '/update_a_{{ assignment.id }}';" class="update"> Update </button>
+            </span>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+<h2>Exams</h2>
+<table id="SemesterExamTable">
+    <tr>
+        <th> Date </th>
+        <th> Course </th>
+        <th> Name </th>
+        <th> Location </th>
+        <th> Time </th>
+        <th> Grade </th>
+        <th> Update </th>
+    </tr>
+    {% for exam in exams %}
+    <tr style="background-color: {{ color_assign(exam.course.id) }}">
+        <td> {{ exam.date }} </td>
+        <td> {{ exam.course.name }} </td>
+        <td> {{ exam.name }} </td>
+        <td> {{ exam.location }} </td>
+        <td> {{ exam.time }} </td>
+        {% if exam.grade == -1 %}
+            <td> Ungraded </td>
+        {% elif exam.grade == -2 %}
+            <td> N/A </td>
+        {% else %}
+            <td> {{ num_process(exam.grade) }} </td>
+        {% endif %}
+        <td>
+            <span>
+                <button onclick="location.href = '/update_e_{{ exam.id }}';" class="update"> Update </button>
+            </span>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+<h2>New Course</h2>
+<form method="post" id="CourseForm">
+    {{ course_form.hidden_tag() }}
+    <table class="FormTable">
+        <tr>
+            <th>{{ course_form.name.label }}</th>
+            <th>{{ course_form.url_link.label }}</th>
+        </tr>
+        <tr>
+            <td>{{ course_form.name() }}</td>
+            <td>{{ course_form.url_link() }}</td>
+        </tr>
+    </table>
+    {{ course_form.submit() }}
+</form>
+
+
+{% endblock %}

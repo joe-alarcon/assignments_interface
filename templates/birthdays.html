@@ -1,0 +1,80 @@
+{% extends "index.html" %}
+{% block content %}
+
+{% if todays %}
+<h3>Today's BDays</h3>
+<table class="BWTable" id="TodayBDaysTable">
+    <tr id="TodayBDaysTableRowHeader">
+        <th> Name </th>
+    </tr>
+    {% for p in todays %}
+    <tr>
+        <td> {{ p.name }} </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
+
+<h3>{{ month_name }}'s BDays</h3>
+<table class="BWTable" id="MonthBDaysTable">
+    <tr id="MonthBDaysTableRowHeader">
+        <th> Name </th>
+        <th> Day </th>
+    </tr>
+    {% for p in months %}
+    <tr>
+        <td> {{ p.name }} </td>
+        <td> {{ p.date.day }} </td>
+    </tr>
+    {% endfor %}
+</table>
+
+
+<h3>New BDay</h3>
+<form method="post" id="BDayForm">
+    {{ form.hidden_tag() }}
+    <table class="FormTable">
+        <tr>
+            <th>{{ form.name.label }}</th>
+            <th>{{ form.date.label }}</th>
+        </tr>
+        <tr>
+            <td>{{ form.name() }}</td>
+            <td>{{ form.date() }}</td>
+        </tr>
+    </table>
+    {{ form.submit() }}
+</form>
+
+<h3>Search Month</h3>
+<form method="post" id="BDayForm">
+    {{ search_form.hidden_tag() }}
+    <table class="FormTable">
+        <tr>
+            <th>{{ search_form.month.label }}</th>
+            <th> Submit </th>
+        </tr>
+        <tr>
+            <td>{{ search_form.month() }}</td>
+            <td>{{ search_form.submit() }}</td>
+        </tr>
+    </table>
+</form>
+
+{% if b_months %}
+<table class="BWTable" id="MonthBDaysTable">
+    <tr id="MonthBDaysTableRowHeader">
+        <th> Name </th>
+        <th> Day </th>
+    </tr>
+    {% for p in b_months %}
+    <tr>
+        <td> {{ p.name }} </td>
+        <td> {{ p.date.day }} </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
+
+
+{% endblock %}

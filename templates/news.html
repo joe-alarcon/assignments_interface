@@ -1,0 +1,24 @@
+{% extends "index.html" %}
+{% block content %}
+
+<div id="News">
+    <div class="HomeContainer">
+        <h2>World</h2>
+        <ul class="news">
+        {% for item in w_news %}
+            <li> <a href="{{ item[1] }}" target="_blank"> {{ item[0] }} </a> </li>
+        {% endfor %}
+        </ul>
+    </div>
+    
+    <div class="HomeContainer">
+        <h2>US</h2>
+        <ul class="news">
+        {% for item in us_news %}
+            <li> <a href="{{ item[1] }}" target="_blank"> {{ item[0] }} </a> </li>
+        {% endfor %}
+        </ul>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends "index.html" %}
+
+{% block content %}
+
+<div class="HomeContainer">
+    <table id="ReminderTable">
+        <tr>
+            <th> Reminer </th>
+            <th> Update </th>
+        </tr>
+        {% for reminder in reminders %}
+        <tr>
+            <td>
+                {{ reminder.content }}{% if reminder.link %}: <a href="{{ reminder.link }}" target="_blank">link</a>{% endif %}
+            </td>
+            <td>
+                <span>
+                    <button onclick="location.href = '/update_reminder_{{ reminder.id }}';" class="update"> Update </button>
+                </span>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+
+<div class="HomeContainer">
+    <h2>New Reminder</h2>
+    <form method="post" id="NewReminder">
+        {{ reminderform.hidden_tag() }}
+        <table class="FormTable">
+            <tr>
+                <th> {{ reminderform.content.label }} </th>
+                <th> {{ reminderform.link.label }} </th>
+            </tr>
+            <tr>
+                <td> {{ reminderform.content() }} </td>
+                <td> {{ reminderform.link() }} </td>
+            </tr>
+        </table>
+        
+        {{ reminderform.submit() }}
+      </form>
+</div>
+
+
+{% endblock %}

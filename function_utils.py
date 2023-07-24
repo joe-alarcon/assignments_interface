@@ -68,6 +68,24 @@ def format_for_home(l: list) -> list:
             break
     return to_return
 
+def get_assignment_int(a: str):
+    """
+    Takes in a string and returns the number at the end of the string and the amount of digits.
+    If no number, returns (0,0)
+    """
+    try:
+        a_last_char = int(a[-1])
+        try:
+            a_secnd_to_last_char = int(a[-2])
+            a_int_rtn = a_secnd_to_last_char*10 + a_last_char
+            size = -2
+        except ValueError:
+            a_int_rtn = a_last_char
+            size = -1
+    except ValueError:
+        return (0, 0)
+    return (a_int_rtn, size)
+
 Standard_Error = 1000
 
 def average(lst: list):

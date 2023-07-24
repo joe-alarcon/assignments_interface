@@ -150,11 +150,11 @@ ul#OverdueList li {
 }
 
 ul#ExamsInWeekList {
-    list-style-type: circle;
+    padding-inline-start: 0px;
 }
 
 ul#TodayExamsList {
-    list-style-type: circle;
+    padding-inline-start: 0px;
 }
 
 ul.HomeList h3 {
@@ -166,6 +166,10 @@ ul.HomeList h3 {
     border-style: solid;
     margin-top: 5px;
     margin-bottom: 5px;
+}
+
+ul.HomeList li {
+    margin-bottom: 15px;
 }
 
 ul#TodayAssignmentsList li {
@@ -367,6 +371,11 @@ a.ToDoLink {
 a.UpdateLink {
     margin-left: 0px;
     margin-right: 0px;
+}
+
+a.CourseTitle {
+    font-size: inherit;
+    margin-right: 10px;
 }
 
 

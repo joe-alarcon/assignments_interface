@@ -11,7 +11,7 @@ from web_scrape import *
 from function_utils import *
 
 news_dict = {"world": [], "us": []}
-update_dict = {"recorded_date": date.today()}
+update_dict = {"recorded_date": date.today(), "previous_referral": "/"}
 
 def update_tasks_events():
     with app.app_context():
@@ -379,6 +379,7 @@ def semester(sem):
     sem_courses = sorted(semester_.courses, key=lambda x: x.name)
     sem_exams = sorted(semester_.get_all_semester_exams(), key=sort_by_datetime)
     final_gpa = semester_.calculate_final_gpa()
+    display_final_grades = any(list(map(lambda course: course.final_grade != "z", sem_courses)))
 
     course_form = CourseForm()
     if course_form.validate_on_submit():
@@ -397,7 +398,8 @@ def semester(sem):
 
     return render_template('semester_assignments.html', semester=semester_, assignments=sem_assignments,
                            courses=sem_courses, course_form=course_form, exams=sem_exams, color_assign=color_assign,
-                           num_process=num_process, final_gpa=num_process(final_gpa, Standard_Error))
+                           num_process=num_process, final_gpa=num_process(final_gpa, Standard_Error),
+                           display_final_grades=display_final_grades)
 
 @app.route('/sem_update/<sem_str>', methods=['GET'])
 def update_semester(sem_str):
@@ -637,6 +639,8 @@ def update_as(num):
     update_form = UpdateFormA()
     assignment = Assignment.get_from_id(num)
     back = request.referrer
+    if request.method == 'GET':
+        update_dict["previous_referral"] = back
     drop_available = ("drop" in assignment.type) or ((assignment.type + " Drop") in assignment.course.get_course_policies())
 
     if update_form.is_submitted():
@@ -671,7 +675,9 @@ def update_as(num):
                 flag_modified(course, "dirty")
                 assignment.type = assignment.type + "_drop"
         db.session.commit()
-        return redirect(f'/course/{assignment.course.name}')
+        rtn_add = update_dict["previous_referral"]
+        update_dict["previous_referral"] = url_for("home")
+        return redirect(rtn_add)
 
     return render_template('update.html', up_form=update_form, form_type_a=True, coursework=assignment, back=back, drop_available=drop_available, z_score_clobber=False)
 
@@ -681,6 +687,8 @@ def update_e(num):
     update_form = UpdateFormE()
     exam = Examination.get_from_id(num)
     back = request.referrer
+    if request.method == 'GET':
+        update_dict["previous_referral"] = back
     z_score_clobber = "MT Clobber Z-Score" in exam.course.get_course_policies()
     drop_policy = ("mt Drop" in exam.course.get_course_policies()) and ("mt" in exam.name)
 
@@ -727,9 +735,10 @@ def update_e(num):
                 string = "MT Z-Score Clobber applied"
             course.grade_data[exam.name]["Course Policy"] = string 
             flag_modified(course, "grade_data")
-
         db.session.commit()
-        return redirect(f'/course/{exam.course.name}')
+        rtn_add = update_dict["previous_referral"]
+        update_dict["previous_referral"] = url_for("home")
+        return redirect(rtn_add)
 
     return render_template('update.html', up_form=update_form, form_type_a=False, coursework=exam, back=back, drop_available=drop_policy, z_score_clobber=z_score_clobber)
 

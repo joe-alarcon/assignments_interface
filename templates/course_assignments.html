@@ -5,9 +5,10 @@
     <button onclick="location.href = '/semester/{{course.semester.name}}';" class="semester"> {{course.semester.name}} </button>
 </span>
 
-<h1> {{ course.name }} {% if course.final_grade != "z" %} Final Grade: {{ course.final_grade }} {% endif %} </h1>
-
-<a href="{{ course.url_link }}" target="_blank"> link </a>
+<h1> 
+    <a href="{{ course.url_link }}" target="_blank" class="CourseTitle">{{ course.name }}</a>  
+    {% if course.final_grade != "z" %} Final Grade: {{ course.final_grade }} {% endif %} 
+</h1>
 
 {% if refresh %}
 <span>

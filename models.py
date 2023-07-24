@@ -2,7 +2,7 @@ from app import db, app
 from datetime import date, timedelta, datetime
 from flask_login import UserMixin
 import json
-
+from function_utils import get_assignment_int
 
 def sort_by_datetime(object_to_compare):
     date = object_to_compare.date
@@ -207,21 +207,8 @@ class Course(db.Model):
     def update_assignments(self, assignment):
         """
         The assignment is to be deleted --> update the names for assignments that have the same name and are in
-        the same assignment category. 
+        the same assignment category (and that are due after assignment).
         """
-        def get_assignment_int(a: str):
-            try:
-                a_last_char = int(a[-1])
-                try:
-                    a_secnd_to_last_char = int(a[-2])
-                    a_int_rtn = a_secnd_to_last_char*10 + a_last_char
-                    size = -2
-                except ValueError:
-                    a_int_rtn = a_last_char
-                    size = -1
-            except ValueError:
-                return 0, 0
-            return a_int_rtn, size
         assignment_name = assignment.name
         assignment_int, assignment_size = get_assignment_int(assignment_name)
         if assignment_size == 0:
@@ -242,20 +229,6 @@ class Course(db.Model):
         The assignment is to be created --> update the names for future assignments that have the same name and are in
         the same assignment category. 
         """
-        def get_assignment_int(a: str):
-            try:
-                a_last_char = int(a[-1])
-                try:
-                    a_secnd_to_last_char = int(a[-2])
-                    a_int_rtn = a_secnd_to_last_char*10 + a_last_char
-                    size = -2
-                except ValueError:
-                    a_int_rtn = a_last_char
-                    size = -1
-            except ValueError:
-                return 0, 0
-            return a_int_rtn, size
-        
         a_int, a_size = get_assignment_int(a_name)
         if a_size == 0:
             return

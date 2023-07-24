@@ -20,6 +20,7 @@
     {% endfor %}
 </div>
 
+{% if display_final_grades %}
 <h2>Final Grades</h2>
 <table id="SemesterFinalGradesTable">
     <tr>
@@ -48,6 +49,7 @@
     </tr>
     {% endif %}
 </table>
+{% endif %}
 
 <h2>All Semester Assignments</h2>
 <table id="SemesterAssignmentTable">

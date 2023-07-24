@@ -109,12 +109,17 @@
 <h3>Assignments, Exams, and Tasks</h3>
 <ul class='CalendarRowList'>
   {% for exam in day_info.get("exams")  %}
-    <li style="background-color: rgb(196,61,61);"><a href="/update_e_{{ exam.id }}">{{ exam.course.name }}: {{ exam.name }}</a> at {{ exam.time }} </li>
-  {% endfor %}
-  {% for assignment in day_info.get("assignments")  %}
-    <li {% if assignment.completed %} style="background-color: rgb(67, 145, 25);" {% endif %}>
-      <a href="/update_a_{{ assignment.id }}"> {{ assignment.course.name }}: {{ assignment.name }} </a>
+    <!-- <li style="background-color: rgb(196,61,61);"><a href="/update_e_{{ exam.id }}">{{ exam.course.name }}: {{ exam.name }}</a> at {{ exam.time }} </li> -->
+    <li style="background-color: rgb(196,61,61);">
+      <button class="CalendarBtn" onclick="location.href = '/update_e_{{ exam.id }}';">{{ exam.course.name }}: {{ exam.name }} at {{ exam.time }} </button>
+      <!-- <a href="/update_e_{{ exam.id }}"> {{ exam.course.name }}: {{ exam.name }} </a> at {{ exam.time }} -->
     </li>
+    {% endfor %}
+  {% for assignment in day_info.get("assignments")  %}
+  <li {% if assignment.completed %} style="background-color: rgb(67, 145, 25);" {% endif %}>
+    <button class="CalendarBtn" onclick="location.href = '/update_a_{{ assignment.id }}';">{{ assignment.course.name }}: {{ assignment.name }}</button>
+    <!-- <a href="/update_a_{{ assignment.id }}"> {{ assignment.course.name }}: {{ assignment.name }} </a> -->
+  </li>
   {% endfor %}
   {% for task in day_info.get("tasks")  %}
     <li> {{ task.title }} at {{ task.time }} </li>
